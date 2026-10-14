@@ -1,6 +1,20 @@
-.PHONY: run
+IMAGE_NAME ?= apertus-swiss-hvet-eval
 
-# Replace with the command that starts the project in a Docker container,
-# e.g. `docker compose up`. It must work from a clean checkout.
-run:
-	@echo "make run is not implemented yet — edit this Makefile"; exit 1
+.PHONY: build smoke run
+
+build:
+	docker build -t $(IMAGE_NAME) .
+
+smoke: build
+	docker run --rm $(IMAGE_NAME) --check-runtime
+
+run: build
+	@if [ -f ../.env ]; then \
+		docker run --rm --env-file ../.env $(IMAGE_NAME) --check-config; \
+	else \
+		docker run --rm \
+			-e LLM_NAME \
+			-e LLM_BASE_URL \
+			-e LLM_API_KEY \
+			$(IMAGE_NAME) --check-config; \
+	fi
