@@ -17,6 +17,7 @@ One record per benchmark case:
 One record per benchmark case:
 
 - `case_id`
+- `fact_id`
 - `category`
 - `subcategory`
 - `difficulty`
