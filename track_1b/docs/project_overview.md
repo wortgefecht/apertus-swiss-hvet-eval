@@ -2,257 +2,157 @@
 
 **Evaluating Apertus on Swiss Professional Education**
 
-Version: **0.2.0**  
-Status: **Hackathon active / benchmark design**  
+Version: **1.0.0**  
+Status: **Evaluation complete / submission preparation**  
 Hackathon: **Hack Apertus 2026 — Track 1B: Swiss Voices / Core Task Intelligence**
 
 ## Overview
 
-This project evaluates how accurately Apertus represents key concepts, structures, qualifications, institutional relationships, and selected quantitative facts in **Swiss Professional Education**.
+Apertus Swiss HVET Eval is a domain-specific benchmark for evaluating factual reliability in **Swiss Professional Education** (Higher Vocational Education and Training, HVET).
 
-In this project, *Swiss Professional Education* refers to the non-university tertiary sector of the Swiss education system that is also described internationally as **Higher Vocational Education and Training (HVET)**.
-
-The project is designed as a domain-specific benchmark for Hack Apertus Track 1B. The core benchmark will use German-language prompts in Swiss Standard German and will combine authoritative Swiss reference sources with selected structured Swiss Open Government Data where appropriate.
-
-## Research Question
+The project asks:
 
 > **How accurately does Apertus represent key concepts, structures, qualifications, institutional relationships, and selected quantitative facts in Swiss Professional Education?**
 
-The project is not intended to provide a comprehensive assessment of Apertus. It examines a deliberately narrow Swiss domain in which local terminology, institutional structures, qualification frameworks, regulatory changes, and official statistics may challenge a general-purpose language model.
+The benchmark targets Swiss-specific terminology, institutional structures, qualification pathways, regulatory responsibilities, financing rules, and selected 2026 reforms that may be difficult for a general-purpose language model.
 
-## Track 1B Alignment
+## Final benchmark
 
-The project targets the **Core Task Intelligence** component of Track 1B.
+The frozen benchmark contains **300 single-turn Q&A cases** in Swiss Standard German.
 
-The current Hack Apertus requirements materially shape the benchmark design:
+It was built from **100 verified atomic facts**, each represented by three deliberately varied questions. Every case includes a canonical reference answer, accepted answer variations, authoritative source citations, and structured provenance and classification metadata.
 
-- a minimum of **300 single-turn question-answer cases**,
-- reference answer variations and source citations,
-- automated evaluation using an **LLM-as-a-judge** approach,
-- a three-way evaluation label set based on **correct / incorrect / not attempted**,
-- human validation of a **random 20% sample** of judge decisions,
-- reporting of **judge-human agreement**,
-- publication of the evaluation dataset and model-response dataset,
-- reproducible evaluation execution in the formal submission repository,
-- a technical report of no more than six pages.
+The benchmark reference date is **1 October 2026**.
 
-The benchmark and evaluation design may still be refined where the official Track 1B templates require a specific schema or implementation detail.
+The seven final content categories are:
 
-## Benchmark Scope
+- system structure,
+- qualifications and titles,
+- access, pathways, and progression,
+- institutional responsibilities,
+- recognition, quality, and regulation,
+- funding and financing,
+- 2026 reforms and edge cases.
 
-The benchmark is expected to cover five broad areas:
+## Apertus evaluation
 
-1. **System and institutions**
-   - Position of Professional Education within the Swiss education system
-   - Higher education vs. Professional Education
-   - Institutional roles and responsibilities
+The final evaluation uses:
 
-2. **Qualifications and credentials**
-   - Federal Professional Examinations
-   - Advanced Federal Professional Examinations
-   - Professional Education Institutions and their qualifications
-   - Qualification levels and titles
+- **Model:** `swiss-ai/Apertus-v1.5-8B`
+- **Revision:** `ef4bbc54d6fe658bc782280ff9f3b53a10a9758f`
+- **Backend:** vLLM
+- **Runtime:** Hugging Face Jobs
+- **Hardware:** A100 large
+- **Temperature:** 0
+- **Seed:** 0
+- **Maximum completion tokens:** 1024
+- **Prompting:** single user message, no system prompt, closed-book
 
-3. **Recognition and responsibilities**
-   - Roles of federal authorities, cantons, professional organisations, and education providers
-   - Recognition and regulation of programmes and qualifications
+All **300 cases** completed without final length truncation.
 
-4. **Distinctions and common misconceptions**
-   - Professional Education vs. universities of applied sciences and universities
-   - Diploma equivalence vs. qualification-framework levels
-   - Continuing education vs. formal Professional Education
-   - Selected edge cases such as postgraduate programmes at Professional Education Institutions
+## Grading
 
-5. **Statistics and quantitative domain knowledge**
-   - Selected official statistics on Swiss Professional Education
-   - Comparisons across years, education types, fields, or other published dimensions
-   - Cases derived reproducibly from structured federal or Open Government Data where suitable
+The primary automated grading uses a SimpleQA-style three-way label set:
 
-The final case distribution will be defined after the benchmark-generation plan is completed.
+- `correct`
+- `incorrect`
+- `not_attempted`
 
-## Benchmark Construction
+The final judge is **Qwen/Qwen3-235B-A22B-Instruct-2507**, served by DeepInfra through Hugging Face Inference Providers.
 
-The project will use two complementary case types.
+A fixed 12-case sample was used to calibrate and freeze the judge configuration. Human validation was then performed blind on a fixed-seed random sample of **60 cases drawn from the remaining 288 non-calibration cases**.
 
-### Source-curated cases
+## Key results
 
-These cases are constructed from authoritative Swiss institutional and legal sources, primarily SERI / SBFI and Fedlex.
+Automated judge results across all 300 cases:
 
-They are intended for concepts such as:
+- **43.3% correct** (130/300)
+- **55.0% incorrect** (165/300)
+- **1.7% not attempted** (5/300)
+- **95% Wilson CI for correct:** 37.8%–49.0%
 
-- institutional structure,
-- recognition,
-- qualification titles,
-- responsibilities,
-- equivalence and non-equivalence,
-- current regulation and recent reform.
+Human validation of 60 cases:
 
-### Data-derived cases
+- **31.7% correct** (19/60)
+- **65.0% incorrect** (39/60)
+- **3.3% not attempted** (2/60)
 
-Where suitable, selected cases may be generated reproducibly from structured Swiss public data, particularly resources discoverable through:
+Judge–human reliability:
 
-- **I14Y**, Switzerland's national data catalogue,
-- **opendata.swiss**, the central Swiss Open Government Data portal,
-- official Federal Statistical Office datasets.
+- **75.0% exact agreement** (45/60)
+- **95% Wilson CI:** 62.8%–84.2%
+- **Cohen's κ:** 0.515
 
-For such cases, dataset provenance, data version or snapshot, retrieval date, and usage conditions must be recorded.
+The judge is asymmetric in its disagreements with the human evaluator: it is more likely to accept partially correct answers containing materially false domain claims than to reject answers the human evaluator considers correct.
 
-## Evaluation Architecture
+## Main findings
 
-The planned core workflow is:
+The weakest category-level performance is observed for:
 
-```text
-benchmark dataset
-      ↓
-Apertus v1.5 via CSCS inference
-      ↓
-raw model-response dataset
-      ↓
-LLM-as-a-judge evaluation
-      ↓
-random 20% expert human validation
-      ↓
-judge-human agreement + factuality / hallucination analysis
-      ↓
-published results and technical report
-```
+- **qualifications and titles:** 23.8%
+- **institutional responsibilities:** 33.3%
 
-The human review therefore validates a random subset rather than manually rating all 300+ responses. With exactly 300 benchmark cases, the 20% validation sample corresponds to **60 cases**.
+Performance is higher for:
 
-## Apertus Access and Runtime
+- **funding and financing:** 50.7%
+- **2026 reforms and edge cases:** 50.8%
+- **system structure:** 55.6%
 
-The evaluation is planned against **Apertus v1.5** using the Hack Apertus / Swiss AI hosted inference infrastructure.
+A notable question-type effect appears in the frozen benchmark:
 
-Primary planned inference backend:
+- **direct factual questions:** 19.8%
+- **responsibility questions:** 8.3%
+- **misconception questions:** 75.4%
 
-```text
-https://api.swissai.svc.cscs.ch/v1
-```
+This pattern suggests that Apertus often recognises a false premise or broad conceptual distinction while struggling with precise Swiss terminology, formal institutional allocation, and exact factual recall.
 
-The interface is OpenAI-compatible and will be called programmatically from the evaluation workflow rather than through a manual chat interface.
+The authoring field `difficulty` should not be interpreted as a psychometric difficulty scale. Its counter-intuitive result — advanced items scoring above basic items — is largely explained by the distribution of question types across those authoring labels.
 
-The final model choice between **Apertus v1.5 8B** and **Apertus v1.5 70B** remains open until the evaluation setup is finalised.
+## Repository structure
 
-The complete model identifier, backend, generation parameters, system context, evaluation date, and other relevant runtime settings will be recorded for reproducibility.
+Key submission artefacts are located under `track_1b/`:
 
-## Language
-
-The project documentation is written in **English** to make the methodology and results accessible to the wider Apertus community.
-
-The core benchmark prompts and Apertus responses will be in **German using Swiss Standard German**.
-
-This distinction is intentional. The evaluation targets Swiss domain knowledge in the language in which the relevant concepts and terminology are commonly encountered.
-
-A small English-language comparison may later repeat a limited subset of cases using official or internationally established English terminology. It remains outside the core benchmark.
-
-## Reference Sources
-
-Reference-standard expectations will be based primarily on authoritative Swiss sources, including:
-
-- State Secretariat for Education, Research and Innovation (SERI / SBFI),
-- Fedlex legislation and ordinances,
-- official Swiss vocational education information resources,
-- Federal Statistical Office data,
-- I14Y and opendata.swiss for selected structured-data cases,
-- other authoritative institutional sources where necessary.
-
-The source hierarchy, source identifiers, access dates, and provenance requirements are documented in `sources.md`.
-
-## Repository Roles
-
-This CodeFloe repository serves as the **development and portfolio repository** for the project. It documents the project history, methodology, benchmark design, sources, and findings in a stable public location.
-
-Hack Apertus additionally requires a formal submission repository based on the official Track 1B project template. That repository will be created separately on GitHub and will contain the required reproducible Docker / `make run` workflow.
-
-The final benchmark dataset and model-response dataset will also be published through the required Hugging Face dataset workflow.
-
-## Planned Outputs
-
-The project is expected to produce:
-
-- a documented evaluation methodology,
-- a benchmark containing at least 300 single-turn Q&A cases,
-- source citations and reference answer variations,
-- a public benchmark dataset,
-- a public Apertus model-response dataset,
-- LLM-as-a-judge ratings,
-- expert human validation for a random 20% sample,
-- judge-human agreement results,
-- hallucination and qualitative error analysis,
-- a reproducible GitHub submission repository,
-- a Hugging Face dataset publication,
-- a technical report of up to six pages,
-- a concise set of final findings in this CodeFloe repository.
-
-Current CodeFloe repository structure:
-
-```text
-apertus-swiss-hvet-eval/
-├── README.md
-├── methodology.md
-├── benchmark.csv
-├── sources.md
-├── CHANGELOG.md
-└── LICENSE.md
-```
-
-Additional files will be added as the benchmark and evaluation progress.
-
-## What This Project Does Not Evaluate
-
-The core project does **not** aim to evaluate:
-
-- general reasoning ability,
-- overall model quality,
-- safety or alignment in general,
-- performance across the entire Swiss education system,
-- broad multilingual performance,
-- direct comparison with other language models.
-
-These may become separate follow-up projects.
-
-## Possible Follow-up
-
-### 1. German-English mini-comparison
-
-A small subset of benchmark cases may later be repeated in English using official or internationally established terminology for Swiss Professional Education.
-
-This would explore whether Apertus produces equally accurate answers when the same Swiss institutional concepts are expressed in German and English.
-
-### 2. Human vs. specialised decision-model evaluation
-
-A later project may compare expert human ratings with automated classifications from a specialised decision model such as **Jev**.
-
-This is distinct from the Hack Apertus LLM-as-a-judge requirement. It would investigate whether a specialised decision model can reproduce expert judgements sufficiently well to support larger evaluation workflows.
-
-### 3. Further benchmark development
-
-Future versions could extend the benchmark to additional areas of Swiss Professional Education, additional languages, or other models.
-
-## Project Status
-
-**v0.2.0 — Hackathon alignment and benchmark redesign**
-
-Current tasks:
-
-- confirm any remaining Track 1B implementation details during the Hack Apertus kick-off and mentoring,
-- finalise benchmark taxonomy and case distribution,
-- inspect the required Hugging Face dataset schema,
-- confirm the final Apertus model size and CSCS access credentials,
-- design the LLM-as-a-judge workflow,
-- create the 300+ submission cases after the current planning phase,
-- implement the reproducible evaluation workflow in the formal submission repository.
-
-The two rows currently contained in `benchmark.csv` are **pre-event schema examples only** and are excluded from the submission dataset unless deliberately redesigned and reintroduced during the official hackathon period.
-
-No Apertus evaluation results are included in this version.
-
-## Licence
-
-The licensing structure is defined in `LICENSE.md`:
-
-- documentation and other non-code material: **CC BY 4.0**,
-- benchmark and evaluation datasets: **CDLA-Permissive-2.0**,
-- source code added to the project: **Apache-2.0**.
-
-Dataset provenance and usage conditions for third-party or Open Government Data sources will be recorded at item or source level where applicable.
+- `data/evaluation.jsonl` — 300 evaluation cases
+- `data/metadata.jsonl` — instance-level provenance and classifications
+- `data/model_responses.jsonl` — Apertus responses plus judge and human-validation fields
+- `data/run_metadata.json` — frozen Apertus inference configuration
+- `data/judge_run_metadata.json` — final judge configuration
+- `data/human_validation_sample.jsonl` — blinded 60-case validation sample
+- `data/human_validation_results.jsonl` — human labels
+- `data/benchmark_summary.json` — aggregate statistics
+- `data/benchmark_breakdown.csv` — category/type/difficulty breakdowns
+- `data/judge_human_disagreements.jsonl` — qualitative disagreement set
+- `docs/methodology.md` — full evaluation methodology
+- `docs/sources.md` — source documentation
+- `docs/licensing.md` — licensing and provenance policy
+- `src/` — dataset construction, inference, judging, validation, and analysis scripts
+
+## Track 1B alignment
+
+The project satisfies the core dataset/evaluation requirements through:
+
+- 300 single-turn Q&A cases,
+- reference answer variations,
+- authoritative source citations,
+- SimpleQA-style three-way grading,
+- LLM-as-a-judge evaluation,
+- 60-case blinded human validation,
+- reported judge–human agreement,
+- instance-level provenance and licensing metadata,
+- reproducible construction and analysis scripts.
+
+The remaining submission work is packaging: publishing the final Hugging Face dataset, completing the root reproducibility workflow, and producing the final technical report.
+
+## Scope and limitations
+
+The benchmark is intentionally narrow. It does not evaluate general reasoning, broad multilingual ability, overall safety, or the entire Swiss education system.
+
+It uses one Apertus model size, one response per question, and one expert human validator. Results are therefore best understood as a focused test of **Swiss domain factuality**, particularly where precise terminology and institutional knowledge matter.
+
+## Licensing
+
+The licensing structure is documented in `docs/licensing.md`:
+
+- source code: **Apache-2.0**
+- documentation and non-code project material: **CC BY 4.0**
+- benchmark and evaluation data: **CDLA-Permissive-2.0**
