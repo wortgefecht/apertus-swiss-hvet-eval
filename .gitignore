@@ -25,3 +25,6 @@ build/
 .DS_Store
 .idea/
 .vscode/
+
+# Local Hugging Face job outputs
+track_1b/job_output*/
