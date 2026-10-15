@@ -13,6 +13,7 @@ from pathlib import Path
 
 EXPECTED_CASE_IDS = [f"PE-{i:03d}" for i in range(1, 301)]
 EXPECTED_MODEL = "swiss-ai/Apertus-v1.5-8B"
+LABELS = {"correct", "incorrect", "not_attempted"}
 
 
 def read_jsonl(path: Path) -> list[dict]:
@@ -49,12 +50,17 @@ def main() -> None:
     parser.add_argument(
         "--responses",
         type=Path,
-        default=Path("track_1b/job_output/model_responses.jsonl"),
+        default=Path("track_1b/data/model_responses.jsonl"),
     )
     parser.add_argument(
         "--run-metadata",
         type=Path,
-        default=Path("track_1b/job_output/run_metadata.json"),
+        default=Path("track_1b/data/run_metadata.json"),
+    )
+    parser.add_argument(
+        "--graded",
+        action="store_true",
+        help="Validate final graded responses instead of pre-grading responses.",
     )
     args = parser.parse_args()
 
@@ -112,6 +118,9 @@ def main() -> None:
     empty_ids: list[str] = []
     truncated_ids: list[str] = []
     repeated_texts = Counter()
+    judge_counts = Counter()
+    human_counts = Counter()
+    human_checked_count = 0
 
     for row in responses:
         cid = row.get("case_id", "?")
@@ -159,11 +168,47 @@ def main() -> None:
         else:
             prompt_tokens.append(p_tokens)
 
-        for field in ("judge_model", "judge_label", "judge_reason", "human_label"):
-            if row.get(field) is not None:
-                errors.append(f"{cid}: {field} should still be null before grading")
-        if row.get("human_checked") is not False:
-            errors.append(f"{cid}: human_checked should be false before grading")
+        if args.graded:
+            judge_label = row.get("judge_label")
+            if judge_label not in LABELS:
+                errors.append(f"{cid}: invalid judge_label={judge_label!r}")
+            else:
+                judge_counts[judge_label] += 1
+
+            if not isinstance(row.get("judge_model"), str) or not row["judge_model"].strip():
+                errors.append(f"{cid}: missing judge_model")
+            if not isinstance(row.get("judge_reason"), str) or not row["judge_reason"].strip():
+                errors.append(f"{cid}: missing judge_reason")
+
+            checked = row.get("human_checked")
+            if not isinstance(checked, bool):
+                errors.append(f"{cid}: human_checked must be boolean")
+            elif checked:
+                human_checked_count += 1
+                label = row.get("human_label")
+                if label not in LABELS:
+                    errors.append(f"{cid}: invalid human_label={label!r}")
+                else:
+                    human_counts[label] += 1
+                if row.get("human_validation_seed") != 20261015:
+                    errors.append(f"{cid}: unexpected human_validation_seed")
+                if row.get("human_blinded_to_judge") is not True:
+                    errors.append(f"{cid}: human_blinded_to_judge must be true")
+            else:
+                for field in (
+                    "human_label",
+                    "human_reason",
+                    "human_validation_seed",
+                    "human_blinded_to_judge",
+                ):
+                    if row.get(field) is not None:
+                        errors.append(f"{cid}: {field} must be null when human_checked=false")
+        else:
+            for field in ("judge_model", "judge_label", "judge_reason", "human_label"):
+                if row.get(field) is not None:
+                    errors.append(f"{cid}: {field} should still be null before grading")
+            if row.get("human_checked") is not False:
+                errors.append(f"{cid}: human_checked should be false before grading")
 
     if empty_ids:
         errors.append(f"empty model responses: {', '.join(empty_ids)}")
@@ -173,6 +218,12 @@ def main() -> None:
             "potentially truncated/non-stop responses: " + ", ".join(truncated_ids)
         )
 
+    if args.graded:
+        if sum(judge_counts.values()) != 300:
+            errors.append("graded response file does not contain 300 valid judge labels")
+        if human_checked_count != 60:
+            errors.append(f"expected 60 human-checked rows, found {human_checked_count}")
+
     repeated = sorted(
         ((count, text) for text, count in repeated_texts.items() if count > 1),
         reverse=True,
@@ -180,6 +231,7 @@ def main() -> None:
 
     print("Apertus response validation")
     print("===========================")
+    print(f"Mode:                     {'graded' if args.graded else 'pre-grading'}")
     print(f"Evaluation rows:          {len(evaluation)}")
     print(f"Response rows:            {len(responses)}")
     print(f"Unique case IDs:          {len(set(resp_ids))}")
@@ -195,6 +247,15 @@ def main() -> None:
     for key, value in finish_reasons.items():
         print(f"  {str(key):20s} {value:3d}")
     print()
+
+    if args.graded:
+        print("Judge labels")
+        for label in ("correct", "incorrect", "not_attempted"):
+            print(f"  {label:20s} {judge_counts[label]:3d}")
+        print(f"Human checked:            {human_checked_count}")
+        for label in ("correct", "incorrect", "not_attempted"):
+            print(f"  human {label:14s} {human_counts[label]:3d}")
+        print()
 
     if completion_tokens:
         print("Completion tokens")
