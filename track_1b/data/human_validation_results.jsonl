@@ -41,11 +41,11 @@
 {"case_id":"PE-212","human_label":"incorrect","human_reason":"Die Antwort stellt einen so nicht gefragten internationalen Kontext her; es geht nur um die Schweiz und den Diplomzusatz HF/BP/HFP.","validation_seed":20261015,"blinded_to_judge":true}
 {"case_id":"PE-213","human_label":"incorrect","human_reason":"Die Antwort ist zwar korrekt, spricht aber von Deutschland statt der Schweiz.","validation_seed":20261015,"blinded_to_judge":true}
 {"case_id":"PE-222","human_label":"incorrect","human_reason":"Die Frage wurde zu allgemein beantwortet; zudem werden die konkreten Bedingungen (mind. 5 Jahre) nicht genannt.","validation_seed":20261015,"blinded_to_judge":true}
-{"case_id":"PE-227","human_label":"incorrect","human_reason":"Die Antwort ist im Grundzug korrekt, allerdings ist \"weiterhin den Titelzusatz erhalch.","validation_seed":20261015,"blinded_to_judge":true}
+{"case_id":"PE-227","human_label":"incorrect","human_reason":"Die Antwort ist im Grundzug korrekt, behauptet aber fälschlich, Repetierende könnten unter bestimmten Voraussetzungen weiterhin den neuen Titelzusatz erhalten; gerade für diesen Fall besteht die Ausnahme.","validation_seed":20261015,"blinded_to_judge":true}
 {"case_id":"PE-228","human_label":"incorrect","human_reason":"Die Antwort ist zwar korrekt, nennt aber einen falschen, inexistenten Titelzusatz.","validation_seed":20261015,"blinded_to_judge":true}
 {"case_id":"PE-236","human_label":"incorrect","human_reason":"Antwort ist nicht korrekt, denn die Trägerschaft ist nicht zwingend identisch mit der ausstellenden Stelle.","validation_seed":20261015,"blinded_to_judge":true}
 {"case_id":"PE-239","human_label":"incorrect","human_reason":"Gefragt war \"Eröffnung der Prüfungsverfügung\"; Antwort sagt Vorprojekt.","validation_seed":20261015,"blinded_to_judge":true}
-{"case_id":"PE-243","human_label":"incorrect","human_reason":"Antwort ist klar falsch; es besteht eine Midnestschwelle von CHF 1000.","validation_seed":20261015,"blinded_to_judge":true}
+{"case_id":"PE-243","human_label":"incorrect","human_reason":"Antwort ist klar falsch; es besteht eine Mindestschwelle von CHF 1000.","validation_seed":20261015,"blinded_to_judge":true}
 {"case_id":"PE-249","human_label":"incorrect","human_reason":"Antwort zwar korrekt, aber die Begründung ist halluziniert; zudem werden HF wiederum als Fachmittelschule bezeichnet.","validation_seed":20261015,"blinded_to_judge":true}
 {"case_id":"PE-250","human_label":"incorrect","human_reason":"Klar falsche Antwort.","validation_seed":20261015,"blinded_to_judge":true}
 {"case_id":"PE-253","human_label":"incorrect","human_reason":"Falsche, zudem ausufernde Antwort, wo eigentlich eine knappe Antwort ausreicht.","validation_seed":20261015,"blinded_to_judge":true}
