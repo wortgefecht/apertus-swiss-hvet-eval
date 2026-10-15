@@ -151,7 +151,7 @@ These cases are used for qualitative analysis; they do not trigger retrospective
 
 The frozen artefacts include benchmark cases and metadata, exact Apertus responses, model revision and inference parameters, final judge outputs and judge metadata, calibration sample and seed, blinded human sample and seed, scoring and analysis scripts, and aggregate result files.
 
-The final submission workflow is being packaged so that `make run` from the repository root can reproduce validation and scoring from a clean checkout and clearly document how new model responses can be generated.
+`make run` from the repository root builds a Docker image and executes a deterministic offline reproduction workflow. It validates benchmark construction, validates the frozen graded Apertus responses against the recorded run metadata, recomputes the aggregate benchmark statistics, and verifies the reproduced headline metrics against the frozen submission results. No API keys are required for this default reproduction path. GPU inference and the external LLM judge are documented separately because they require hosted runtimes and credentials.
 
 ## 12. Limitations
 
