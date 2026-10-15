@@ -1,0 +1,60 @@
+{"case_id":"PE-001","human_label":"correct","human_reason":null,"validation_seed":20261015,"blinded_to_judge":true}
+{"case_id":"PE-006","human_label":"correct","human_reason":null,"validation_seed":20261015,"blinded_to_judge":true}
+{"case_id":"PE-007","human_label":"incorrect","human_reason":"Verwechselt eidgenössischen Fachausweis (Berufsprüfung) mit eidgenössischem Diplom (höhere Fachprüfung).","validation_seed":20261015,"blinded_to_judge":true}
+{"case_id":"PE-010","human_label":"incorrect","human_reason":"Antwort vermischt Lehrabschluss (EFZ) mit BP und HFP.","validation_seed":20261015,"blinded_to_judge":true}
+{"case_id":"PE-013","human_label":"correct","human_reason":null,"validation_seed":20261015,"blinded_to_judge":true}
+{"case_id":"PE-016","human_label":"correct","human_reason":null,"validation_seed":20261015,"blinded_to_judge":true}
+{"case_id":"PE-017","human_label":"incorrect","human_reason":"Die Antwort enthält falsche, halluzinierte Abschlüsse.","validation_seed":20261015,"blinded_to_judge":true}
+{"case_id":"PE-021","human_label":"correct","human_reason":null,"validation_seed":20261015,"blinded_to_judge":true}
+{"case_id":"PE-022","human_label":"correct","human_reason":null,"validation_seed":20261015,"blinded_to_judge":true}
+{"case_id":"PE-025","human_label":"correct","human_reason":null,"validation_seed":20261015,"blinded_to_judge":true}
+{"case_id":"PE-031","human_label":"incorrect","human_reason":"Mindestdauer korrekt, aber HF fälschlich als Fachmittelschule statt Höhere Fachschule bezeichnet.","validation_seed":20261015,"blinded_to_judge":true}
+{"case_id":"PE-033","human_label":"not_attempted","human_reason":"Keine substantielle Antwort; fordert unnötige Zusatzinformationen und trifft keine Entscheidung.","validation_seed":20261015,"blinded_to_judge":true}
+{"case_id":"PE-036","human_label":"correct","human_reason":null,"validation_seed":20261015,"blinded_to_judge":true}
+{"case_id":"PE-037","human_label":"correct","human_reason":null,"validation_seed":20261015,"blinded_to_judge":true}
+{"case_id":"PE-053","human_label":"incorrect","human_reason":"Völlig falsches Datum genannt (2011 statt 2026).","validation_seed":20261015,"blinded_to_judge":true}
+{"case_id":"PE-061","human_label":"not_attempted","human_reason":"Keine substantielle Antwort; Modell gibt an, keine Informationen zu haben und beantwortet die Frage nicht.","validation_seed":20261015,"blinded_to_judge":true}
+{"case_id":"PE-073","human_label":"incorrect","human_reason":"Klar falsche Antwort (3 statt 8).","validation_seed":20261015,"blinded_to_judge":true}
+{"case_id":"PE-091","human_label":"incorrect","human_reason":"Klar falsche Antwort.","validation_seed":20261015,"blinded_to_judge":true}
+{"case_id":"PE-096","human_label":"incorrect","human_reason":"Kernaussage richtig, aber Zuständigkeiten materiell falsch dargestellt: Prüfungsordnungen werden von den Prüfungsträgerschaften erarbeitet und vom SBFI genehmigt.","validation_seed":20261015,"blinded_to_judge":true}
+{"case_id":"PE-099","human_label":"correct","human_reason":null,"validation_seed":20261015,"blinded_to_judge":true}
+{"case_id":"PE-101","human_label":"incorrect","human_reason":"Es wird klar die falsche Stelle genannt.","validation_seed":20261015,"blinded_to_judge":true}
+{"case_id":"PE-104","human_label":"correct","human_reason":null,"validation_seed":20261015,"blinded_to_judge":true}
+{"case_id":"PE-106","human_label":"incorrect","human_reason":"Falsche Antwort, die Verfügung muss in einer Amtssprache ausgestellt sein.","validation_seed":20261015,"blinded_to_judge":true}
+{"case_id":"PE-108","human_label":"incorrect","human_reason":"Falsche Antwort, die Entscheide können nur in einer Amtssprache ausgestellt werden.","validation_seed":20261015,"blinded_to_judge":true}
+{"case_id":"PE-111","human_label":"incorrect","human_reason":"Grundaufteilung der Zuständigkeiten erkannt, aber SBFI falsch aufgelöst und Anerkennung fälschlich auch auf die höheren Fachschulen statt auf deren Bildungsgänge bezogen.","validation_seed":20261015,"blinded_to_judge":true}
+{"case_id":"PE-112","human_label":"incorrect","human_reason":"Falsche Antwort, zuständig ist das SBFI.","validation_seed":20261015,"blinded_to_judge":true}
+{"case_id":"PE-115","human_label":"incorrect","human_reason":"MiVo-HF und Rahmenlehrplan nicht genannt; zudem wird eine HF hier wieder falsch als \"Fachmittelschule\" bezeichnet.","validation_seed":20261015,"blinded_to_judge":true}
+{"case_id":"PE-127","human_label":"incorrect","human_reason":"Korrekte Antwort wäre mind. 50 Prozent; keine Angabe in Arbeitsstunden.","validation_seed":20261015,"blinded_to_judge":true}
+{"case_id":"PE-129","human_label":"incorrect","human_reason":"Die Antwort nennt das entscheidende Kriterium Anrechnung als praktischer Bildungsbestandteil nicht (explizit).","validation_seed":20261015,"blinded_to_judge":true}
+{"case_id":"PE-130","human_label":"incorrect","human_reason":"Mindestanforderung falsch dargestellt: Praxisorientierte Diplom-/Projektarbeit ist obligatorischer Bestandteil, nicht nur in einzelnen HF-Bildungsgängen.","validation_seed":20261015,"blinded_to_judge":true}
+{"case_id":"PE-134","human_label":"incorrect","human_reason":"Die Antwort ist grundsätzlich korrekt, aber NDS HF wird (halluziniert) aufgelöst in \"Niedergelassene Fachperson im Gesundheitswesen HF\".","validation_seed":20261015,"blinded_to_judge":true}
+{"case_id":"PE-146","human_label":"correct","human_reason":null,"validation_seed":20261015,"blinded_to_judge":true}
+{"case_id":"PE-147","human_label":"incorrect","human_reason":"Antwort beinhaltet nicht die massgebenden Faktoren anrechenbare Gebühren.","validation_seed":20261015,"blinded_to_judge":true}
+{"case_id":"PE-159","human_label":"incorrect","human_reason":"Die Antwort ist zwar korrekt, vermischt aber Wohnsitz und steuerlicher Wohnsitz; ausserdem ist der Bundesbeitrag nicht zu verwechseln mit anderen staatlichen Bezügen wie IV etc.","validation_seed":20261015,"blinded_to_judge":true}
+{"case_id":"PE-164","human_label":"correct","human_reason":null,"validation_seed":20261015,"blinded_to_judge":true}
+{"case_id":"PE-189","human_label":"correct","human_reason":null,"validation_seed":20261015,"blinded_to_judge":true}
+{"case_id":"PE-190","human_label":"incorrect","human_reason":"Nennt allgemeine Funktionen des Rahmenlehrplans, beantwortet aber nicht die spezifische Frage nach Inhalten und Anforderungen des Qualifikationsverfahrens.","validation_seed":20261015,"blinded_to_judge":true}
+{"case_id":"PE-205","human_label":"incorrect","human_reason":"Die Antwort stellt einen internationalen Bezug her, der so klar nicht gefragt ist; zudem wird nicht geantwortet, dass der Diplomzusatz auch auf Englisch ausgestellt wird.","validation_seed":20261015,"blinded_to_judge":true}
+{"case_id":"PE-208","human_label":"incorrect","human_reason":"Die Antwort beantwortet die Frage nicht; erwartet waren NQR- und EQR-Niveau.","validation_seed":20261015,"blinded_to_judge":true}
+{"case_id":"PE-211","human_label":"incorrect","human_reason":"Die Antwort ist zwar im Grundsatz richtig, vermischt aber Faktoren/Niveaus der Lehrgänge.","validation_seed":20261015,"blinded_to_judge":true}
+{"case_id":"PE-212","human_label":"incorrect","human_reason":"Die Antwort stellt einen so nicht gefragten internationalen Kontext her; es geht nur um die Schweiz und den Diplomzusatz HF/BP/HFP.","validation_seed":20261015,"blinded_to_judge":true}
+{"case_id":"PE-213","human_label":"incorrect","human_reason":"Die Antwort ist zwar korrekt, spricht aber von Deutschland statt der Schweiz.","validation_seed":20261015,"blinded_to_judge":true}
+{"case_id":"PE-222","human_label":"incorrect","human_reason":"Die Frage wurde zu allgemein beantwortet; zudem werden die konkreten Bedingungen (mind. 5 Jahre) nicht genannt.","validation_seed":20261015,"blinded_to_judge":true}
+{"case_id":"PE-227","human_label":"incorrect","human_reason":"Die Antwort ist im Grundzug korrekt, allerdings ist \"weiterhin den Titelzusatz erhalch.","validation_seed":20261015,"blinded_to_judge":true}
+{"case_id":"PE-228","human_label":"incorrect","human_reason":"Die Antwort ist zwar korrekt, nennt aber einen falschen, inexistenten Titelzusatz.","validation_seed":20261015,"blinded_to_judge":true}
+{"case_id":"PE-236","human_label":"incorrect","human_reason":"Antwort ist nicht korrekt, denn die Trägerschaft ist nicht zwingend identisch mit der ausstellenden Stelle.","validation_seed":20261015,"blinded_to_judge":true}
+{"case_id":"PE-239","human_label":"incorrect","human_reason":"Gefragt war \"Eröffnung der Prüfungsverfügung\"; Antwort sagt Vorprojekt.","validation_seed":20261015,"blinded_to_judge":true}
+{"case_id":"PE-243","human_label":"incorrect","human_reason":"Antwort ist klar falsch; es besteht eine Midnestschwelle von CHF 1000.","validation_seed":20261015,"blinded_to_judge":true}
+{"case_id":"PE-249","human_label":"incorrect","human_reason":"Antwort zwar korrekt, aber die Begründung ist halluziniert; zudem werden HF wiederum als Fachmittelschule bezeichnet.","validation_seed":20261015,"blinded_to_judge":true}
+{"case_id":"PE-250","human_label":"incorrect","human_reason":"Klar falsche Antwort.","validation_seed":20261015,"blinded_to_judge":true}
+{"case_id":"PE-253","human_label":"incorrect","human_reason":"Falsche, zudem ausufernde Antwort, wo eigentlich eine knappe Antwort ausreicht.","validation_seed":20261015,"blinded_to_judge":true}
+{"case_id":"PE-257","human_label":"correct","human_reason":null,"validation_seed":20261015,"blinded_to_judge":true}
+{"case_id":"PE-265","human_label":"incorrect","human_reason":"Antwort beantwortet die Frage nicht, weil sie den Kontext nicht versteht, und spricht von Projekten.","validation_seed":20261015,"blinded_to_judge":true}
+{"case_id":"PE-275","human_label":"correct","human_reason":null,"validation_seed":20261015,"blinded_to_judge":true}
+{"case_id":"PE-280","human_label":"incorrect","human_reason":"Falsche Dauer (12 statt 24 Monate) genannt.","validation_seed":20261015,"blinded_to_judge":true}
+{"case_id":"PE-285","human_label":"correct","human_reason":null,"validation_seed":20261015,"blinded_to_judge":true}
+{"case_id":"PE-287","human_label":"incorrect","human_reason":"Grundsätzlich richtige Antwort; aber sie versteht den Kontext nicht und spricht vom Sozialversicherungsrecht, das hier nicht greift.","validation_seed":20261015,"blinded_to_judge":true}
+{"case_id":"PE-294","human_label":"correct","human_reason":null,"validation_seed":20261015,"blinded_to_judge":true}
+{"case_id":"PE-298","human_label":"correct","human_reason":null,"validation_seed":20261015,"blinded_to_judge":true}
+{"case_id":"PE-300","human_label":"incorrect","human_reason":"Falsche Antwort; Freiheitsstrafen sind keine vorgesehen.","validation_seed":20261015,"blinded_to_judge":true}

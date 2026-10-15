@@ -1,7 +1,10 @@
 # Dataset schema
 
-The submission dataset consists of three JSONL files. An additional
-`run_metadata.json` file records the configuration of the model inference run.
+The submission dataset consists of three primary JSONL files:
+`evaluation.jsonl`, `metadata.jsonl`, and `model_responses.jsonl`.
+
+Additional JSON/JSONL/CSV files record inference provenance, judge calibration,
+human validation, and aggregate analysis.
 
 ## evaluation.jsonl
 
@@ -10,8 +13,8 @@ One record per benchmark case:
 - `case_id`: stable unique identifier
 - `question`: German single-turn question
 - `reference_answer`: canonical ground-truth answer
-- `answer_variations`: alternative valid reference answers
-- `source_citations`: authoritative source URLs
+- `answer_variations`: list of alternative valid reference answers
+- `source_citations`: list of authoritative source URLs
 
 ## metadata.jsonl
 
@@ -35,12 +38,14 @@ One record per benchmark case:
 - `curation_method`
 - `language`
 
-Multiple sources may support one benchmark item. The source-related arrays
-therefore use matching positions across fields.
+Multiple sources may support one benchmark item. Source-related arrays use
+matching positions across fields.
 
 ## model_responses.jsonl
 
-One record per evaluated model response:
+One record per evaluated model response.
+
+### Inference fields
 
 - `case_id`
 - `model`
@@ -49,11 +54,6 @@ One record per evaluated model response:
 - `max_tokens`
 - `run_id`
 - `generated_at`
-- `judge_model`
-- `judge_label`
-- `judge_reason`
-- `human_checked`
-- `human_label`
 - `model_revision`
 - `seed`
 - `thinking`
@@ -61,8 +61,26 @@ One record per evaluated model response:
 - `prompt_tokens`
 - `completion_tokens`
 
-Before grading, the judge fields are `null` and `human_checked` is `false`.
-They are populated by the grading and human-validation stages.
+### LLM-as-a-judge fields
+
+- `judge_model`
+- `judge_label`
+- `judge_reason`
+- `judge_provider`
+- `judge_prompt_version`
+- `judge_generated_at`
+- `judge_finish_reason`
+- `judge_prompt_tokens`
+- `judge_completion_tokens`
+- `judge_total_tokens`
+
+### Human-validation fields
+
+- `human_checked`
+- `human_label`
+- `human_reason`
+- `human_validation_seed`
+- `human_blinded_to_judge`
 
 Valid grading labels are:
 
@@ -70,9 +88,14 @@ Valid grading labels are:
 - `incorrect`
 - `not_attempted`
 
+For the 60-case blinded human-validation sample, `human_checked` is `true`.
+For all other cases it is `false`, with the human-validation fields set to
+`null`.
+
 ## run_metadata.json
 
-Records the inference configuration for the complete benchmark run, including:
+Records the final Apertus inference configuration for the complete benchmark
+run, including:
 
 - run identifier and timestamps
 - model identifier and immutable model revision
@@ -83,5 +106,34 @@ Records the inference configuration for the complete benchmark run, including:
 - SHA-256 hash of the evaluation dataset
 - target and completed case counts
 
-This file provides provenance for the submitted model responses and allows the
-exact benchmark run to be identified independently of later grading.
+## judge_run_metadata.json
+
+Records the final LLM-as-a-judge configuration, including:
+
+- judge model and provider
+- generation parameters
+- judge prompt version and SHA-256 hash
+- SHA-256 hashes of evaluation and response inputs
+- target and completed case counts
+
+## judge_calibration.jsonl and judge_calibration_metadata.json
+
+Records the final fixed 12-case calibration sample used before freezing the
+judge configuration. Calibration cases are excluded from the subsequent
+60-case blinded human-validation hold-out sample.
+
+## human_validation_sample.jsonl
+
+Fixed-seed random sample of 60 benchmark cases drawn from the 288
+non-calibration cases. It contains the question, reference answer, accepted
+answer variations, source citations, and Apertus response, but no judge label.
+
+## human_validation_results.jsonl
+
+Human labels for the 60-case validation sample. The reviewer was blinded to
+the LLM judge labels while rating.
+
+## benchmark_summary.json and benchmark_breakdown.csv
+
+Aggregate benchmark results by category, question type, and difficulty. These
+files are derived from the graded `model_responses.jsonl` and `metadata.jsonl`.
