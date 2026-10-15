@@ -141,7 +141,7 @@ The project satisfies the core dataset/evaluation requirements through:
 - instance-level provenance and licensing metadata,
 - reproducible construction and analysis scripts.
 
-The remaining submission work is packaging: publishing the final Hugging Face dataset, completing the root reproducibility workflow, and producing the final technical report.
+The public Hugging Face dataset has been published, and the root `make run` workflow now reproduces and verifies the frozen evaluation deterministically in Docker. The remaining core submission task is the final technical report and submission QA.
 
 ## Scope and limitations
 
