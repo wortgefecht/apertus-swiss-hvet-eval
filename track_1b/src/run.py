@@ -1,8 +1,12 @@
 #!/usr/bin/env python3
+"""Container entry point for Apertus Swiss HVET Eval."""
+
+from __future__ import annotations
 
 import argparse
 import os
 import platform
+import subprocess
 import sys
 
 import httpx
@@ -12,6 +16,32 @@ REQUIRED_ENV_VARS = (
     "LLM_NAME",
     "LLM_BASE_URL",
     "LLM_API_KEY",
+)
+
+REPRODUCTION_STEPS = (
+    (
+        "Validate benchmark construction",
+        ["track_1b/src/validate_final_dataset.py"],
+    ),
+    (
+        "Validate frozen Apertus responses and grading",
+        [
+            "track_1b/src/validate_model_responses.py",
+            "--graded",
+            "--responses",
+            "track_1b/data/model_responses.jsonl",
+            "--run-metadata",
+            "track_1b/data/run_metadata.json",
+        ],
+    ),
+    (
+        "Recompute benchmark summaries",
+        ["track_1b/src/analyse_results.py"],
+    ),
+    (
+        "Verify frozen result metrics",
+        ["track_1b/src/verify_reproduction.py"],
+    ),
 )
 
 
@@ -34,6 +64,42 @@ def check_runtime() -> int:
     print("Apertus Swiss HVET Eval")
     print(f"Python: {platform.python_version()}")
     print("Runtime check: OK")
+    return 0
+
+
+def reproduce() -> int:
+    print("Apertus Swiss HVET Eval")
+    print("Deterministic reproduction from frozen model outputs")
+    print("====================================================")
+    print()
+    print(
+        "This workflow validates the published benchmark and frozen Apertus "
+        "responses, recomputes the submitted metrics, and verifies them "
+        "against the expected results."
+    )
+    print(
+        "It does not rerun GPU inference or the external LLM judge; those "
+        "steps require the documented hosted runtimes and credentials."
+    )
+    print()
+
+    for index, (title, args) in enumerate(REPRODUCTION_STEPS, 1):
+        print(f"[{index}/{len(REPRODUCTION_STEPS)}] {title}")
+        result = subprocess.run(
+            [sys.executable, *args],
+            check=False,
+        )
+        if result.returncode != 0:
+            print(
+                f"FAILED: reproduction step {index} returned "
+                f"exit code {result.returncode}.",
+                file=sys.stderr,
+            )
+            return result.returncode
+        print()
+
+    print("====================================================")
+    print("PASS: deterministic benchmark reproduction completed.")
     return 0
 
 
@@ -110,10 +176,8 @@ def api_smoke() -> int:
                 headers=headers,
                 json=payload,
             )
-
             response.raise_for_status()
             data = response.json()
-
     except httpx.HTTPStatusError as exc:
         print(
             f"HTTP error: {exc.response.status_code}",
@@ -124,14 +188,12 @@ def api_smoke() -> int:
             file=sys.stderr,
         )
         return 3
-
     except httpx.HTTPError as exc:
         print(
             f"Connection error: {exc}",
             file=sys.stderr,
         )
         return 4
-
     except ValueError:
         print(
             "API returned invalid JSON.",
@@ -165,20 +227,26 @@ def main() -> int:
     group = parser.add_mutually_exclusive_group()
 
     group.add_argument(
+        "--reproduce",
+        action="store_true",
+        help=(
+            "Validate frozen benchmark artefacts, recompute metrics, "
+            "and verify the published results."
+        ),
+    )
+    group.add_argument(
         "--check-runtime",
         action="store_true",
         help="Verify that the container runtime starts correctly.",
     )
-
     group.add_argument(
         "--check-config",
         action="store_true",
         help=(
-            "Verify required LLM configuration "
+            "Verify optional OpenAI-compatible LLM configuration "
             "without making an API request."
         ),
     )
-
     group.add_argument(
         "--api-smoke",
         action="store_true",
@@ -189,11 +257,13 @@ def main() -> int:
 
     if args.check_runtime:
         return check_runtime()
-
+    if args.check_config:
+        return check_config()
     if args.api_smoke:
         return api_smoke()
 
-    return check_config()
+    # Reproduction is the default container action and requires no credentials.
+    return reproduce()
 
 
 if __name__ == "__main__":
