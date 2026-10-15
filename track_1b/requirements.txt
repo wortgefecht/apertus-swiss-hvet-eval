@@ -1,1 +1,2 @@
-httpx>=0.27,<1
+# No third-party Python dependencies are required for the deterministic
+# reproduction workflow. The optional API smoke test uses the standard library.
