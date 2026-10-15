@@ -2,7 +2,7 @@
 
 Copyright © 2026 Michael Gisiger
 
-This repository uses different open licences for different types of material.
+This repository uses separate open licences for code, documentation, and benchmark data.
 
 ## Documentation and other non-code material
 
@@ -12,80 +12,74 @@ Unless stated otherwise, documentation, written analysis, methodology, reports, 
 
 SPDX identifier: `CC-BY-4.0`
 
-Licence text:  
-https://creativecommons.org/licenses/by/4.0/
+This includes, among other files:
 
-This currently includes, among other files:
-
-- `README.md`
-- `methodology.md`
-- `sources.md`
-- `CHANGELOG.md`
+- `track_1b/README.md`
+- `track_1b/technical_report.md`
+- `track_1b/docs/methodology.md`
+- `track_1b/docs/project_overview.md`
+- `track_1b/docs/sources.md`
+- `track_1b/docs/benchmark_spec.md`
+- `track_1b/docs/dataset_schema.md`
+- `track_1b/docs/CHANGELOG.md`
 
 ## Benchmark and evaluation data
 
-Benchmark datasets, evaluation datasets, structured test cases, result tables, annotations, and related project data are licensed under:
+Benchmark datasets, evaluation datasets, model-response records, annotations, result tables, and related structured project data are licensed under:
 
 **Community Data License Agreement – Permissive 2.0 (CDLA-Permissive-2.0)**
 
 SPDX identifier: `CDLA-Permissive-2.0`
 
-This includes, where applicable:
+This includes, in particular:
 
-- `benchmark.csv`
-- the final evaluation dataset,
-- the Apertus model-response dataset,
-- structured judge and human-validation data,
-- derived structured evaluation data.
+- `track_1b/data/fact_bank.jsonl`
+- `track_1b/data/item_plan.jsonl`
+- `track_1b/data/authored_items.jsonl`
+- `track_1b/data/evaluation.jsonl`
+- `track_1b/data/metadata.jsonl`
+- `track_1b/data/model_responses.jsonl`
+- `track_1b/data/human_validation_sample.jsonl`
+- `track_1b/data/human_validation_results.jsonl`
+- `track_1b/data/judge_calibration.jsonl`
+- `track_1b/data/judge_human_disagreements.jsonl`
+- `track_1b/data/benchmark_summary.json`
+- `track_1b/data/benchmark_breakdown.csv`
+
+Instance-level dataset records also carry the applicable dataset licence in metadata.
 
 ## Source code
 
-Any source code added to this repository will, unless explicitly stated otherwise, be licensed under:
+Source code in this repository is licensed under:
 
 **Apache License 2.0**
 
 SPDX identifier: `Apache-2.0`
 
-The formal Hack Apertus GitHub submission repository will follow the same applicable code-licensing requirement.
+The repository root `LICENSE` file contains the Apache-2.0 licence text.
 
-## Third-party and Open Government Data material
+## Third-party and official source material
 
-External sources referenced by this project are not relicensed by this repository.
+External sources referenced by the project are **not** relicensed by this repository.
 
 Official publications, legislation, webpages, model documentation, third-party datasets, Open Government Data resources, and other referenced materials remain subject to their respective copyright, licensing, and usage conditions.
 
-The benchmark therefore aims to contain original prompts, original reference-answer formulations, original evaluation criteria, and original annotations rather than unnecessary reproduction of protected source material.
+The benchmark therefore uses original questions, original reference-answer formulations, original classifications, and original annotations rather than reproducing unnecessary source text.
 
-For data-derived benchmark items, provenance metadata should record where applicable:
-
-- source portal,
-- specific dataset identifier,
-- source URL,
-- retrieval date,
-- data version or snapshot,
-- applicable usage terms or licence,
-- transformation or query used to derive the case.
-
-Where a source requires attribution or other conditions, those requirements must be preserved in the published dataset metadata.
+Instance-level provenance records identify relevant source information, including source authority, source title, source URL, retrieval date, source type, and applicable rights note.
 
 ## Model responses
 
-Apertus responses included in evaluation datasets are generated as part of the benchmark workflow. Their publication and reuse will follow the applicable Hack Apertus, Apertus, dataset-platform, and submission terms in force at the time of publication.
+Apertus responses in `model_responses.jsonl` were generated during the benchmark evaluation. Their inclusion in the published evaluation dataset follows the applicable Hack Apertus and Apertus terms.
 
-No third-party material contained in a model response is intentionally relicensed by this notice.
+No third-party material that may incidentally appear inside a generated model response is intentionally relicensed by this notice.
 
-## Hack Apertus
+## Hack Apertus alignment
 
-The current licensing structure is designed to align with the Hack Apertus 2026 terms requiring submitted:
+The licensing structure is designed to align with the Hack Apertus 2026 submission requirements:
 
-- source code and model weights to use Apache License 2.0,
-- documentation, designs, text, and other non-code materials to use CC BY 4.0,
-- datasets to use CDLA-Permissive-2.0.
+- source code: **Apache-2.0**
+- documentation and other non-code materials: **CC BY 4.0**
+- datasets: **CDLA-Permissive-2.0**
 
-The project will also document source- and item-level provenance where the final Track 1B dataset schema requires it.
-
-## Version status
-
-This licensing notice forms part of **v0.2.0**, aligned with the Track 1B requirements published on 1 October 2026.
-
-The licensing and provenance metadata will be reviewed once more before the final public dataset and Hack Apertus submission are published.
+The public Hugging Face dataset uses **CDLA-Permissive-2.0** and retains instance-level provenance and source-rights metadata.
