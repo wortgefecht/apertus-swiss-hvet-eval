@@ -8,8 +8,9 @@ import os
 import platform
 import subprocess
 import sys
-
-import httpx
+import json
+import urllib.error
+import urllib.request
 
 
 REQUIRED_ENV_VARS = (
@@ -139,11 +140,7 @@ def api_smoke() -> int:
         )
         return 2
 
-    endpoint = (
-        config["LLM_BASE_URL"].rstrip("/")
-        + "/chat/completions"
-    )
-
+    endpoint = config["LLM_BASE_URL"].rstrip("/") + "/chat/completions"
     payload = {
         "model": config["LLM_NAME"],
         "messages": [
@@ -156,10 +153,15 @@ def api_smoke() -> int:
         "max_tokens": 16,
     }
 
-    headers = {
-        "Authorization": f"Bearer {config['LLM_API_KEY']}",
-        "Content-Type": "application/json",
-    }
+    request = urllib.request.Request(
+        endpoint,
+        data=json.dumps(payload).encode("utf-8"),
+        headers={
+            "Authorization": f"Bearer {config['LLM_API_KEY']}",
+            "Content-Type": "application/json",
+        },
+        method="POST",
+    )
 
     print("Apertus Swiss HVET Eval")
     print(f"Model: {config['LLM_NAME']}")
@@ -167,47 +169,26 @@ def api_smoke() -> int:
     print("Sending one API smoke-test request...")
 
     try:
-        with httpx.Client(
-            timeout=60.0,
-            follow_redirects=True,
-        ) as client:
-            response = client.post(
-                endpoint,
-                headers=headers,
-                json=payload,
-            )
-            response.raise_for_status()
-            data = response.json()
-    except httpx.HTTPStatusError as exc:
-        print(
-            f"HTTP error: {exc.response.status_code}",
-            file=sys.stderr,
-        )
-        print(
-            exc.response.text[:1000],
-            file=sys.stderr,
-        )
+        with urllib.request.urlopen(request, timeout=60) as response:
+            data = json.loads(response.read().decode("utf-8"))
+    except urllib.error.HTTPError as exc:
+        print(f"HTTP error: {exc.code}", file=sys.stderr)
+        try:
+            print(exc.read().decode("utf-8")[:1000], file=sys.stderr)
+        except Exception:
+            pass
         return 3
-    except httpx.HTTPError as exc:
-        print(
-            f"Connection error: {exc}",
-            file=sys.stderr,
-        )
+    except urllib.error.URLError as exc:
+        print(f"Connection error: {exc}", file=sys.stderr)
         return 4
-    except ValueError:
-        print(
-            "API returned invalid JSON.",
-            file=sys.stderr,
-        )
+    except (UnicodeDecodeError, json.JSONDecodeError):
+        print("API returned invalid JSON.", file=sys.stderr)
         return 5
 
     try:
         content = data["choices"][0]["message"]["content"]
     except (KeyError, IndexError, TypeError):
-        print(
-            "Unexpected API response structure.",
-            file=sys.stderr,
-        )
+        print("Unexpected API response structure.", file=sys.stderr)
         print(str(data)[:1000], file=sys.stderr)
         return 6
 
